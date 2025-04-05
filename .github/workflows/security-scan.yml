@@ -1,0 +1,35 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at midnight UTC
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Find hardcoded secrets
+        uses: github/codeql-action/analyze@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Check for vulnerable dependencies
+        # Run even if previous step fails
+        if: always()  
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install safety
+        if: always()
+        run: pip install safety
+
+      - name: Run safety check
+        if: always()
+        run: safety check
