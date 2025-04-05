@@ -1,0 +1,22 @@
+{
+  "rule": {
+    "name": "IAM Permission Changes",
+    "description": "Detects changes to IAM permissions which could indicate unauthorized privilege escalation or access control modifications",
+    "query": {
+      "bool": {
+        "should": [
+          { "match": { "eventName": "AttachRolePolicy" } },
+          { "match": { "eventName": "AttachUserPolicy" } },
+          { "match": { "eventName": "CreatePolicy" } },
+          { "match": { "eventName": "PutUserPolicy" } },
+          { "match": { "eventName": "PutRolePolicy" } },
+          { "match": { "eventName": "CreateUser" } },
+          { "match": { "eventName": "CreateRole" } }
+        ],
+        "minimum_should_match": 1
+      }
+    },
+    "severity": "high",
+    "tags": ["aws", "iam", "security"]
+  }
+}

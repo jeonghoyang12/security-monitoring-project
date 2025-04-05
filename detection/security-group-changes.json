@@ -1,0 +1,21 @@
+{
+  "rule": {
+    "name": "Security Group Modification",
+    "description": "Detects changes to security groups which could indicate unauthorized network access",
+    "query": {
+      "bool": {
+        "should": [
+          { "match": { "eventName": "AuthorizeSecurityGroupIngress" } },
+          { "match": { "eventName": "AuthorizeSecurityGroupEgress" } },
+          { "match": { "eventName": "RevokeSecurityGroupIngress" } },
+          { "match": { "eventName": "RevokeSecurityGroupEgress" } },
+          { "match": { "eventName": "CreateSecurityGroup" } },
+          { "match": { "eventName": "DeleteSecurityGroup" } }
+        ],
+        "minimum_should_match": 1
+      }
+    },
+    "severity": "high",
+    "tags": ["aws", "network", "security"]
+  }
+}

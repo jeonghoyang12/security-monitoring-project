@@ -1,0 +1,16 @@
+{
+  "rule": {
+    "name": "Multiple Failed Login Attempts",
+    "description": "Detects multiple failed login attempts to the AWS Console",
+    "query": {
+      "bool": {
+        "must": [
+          { "match": { "eventName": "ConsoleLogin" } },
+          { "match": { "responseElements.ConsoleLogin": "Failure" } }
+        ]
+      }
+    },
+    "severity": "high",
+    "tags": ["aws", "authentication", "security"]
+  }
+}
