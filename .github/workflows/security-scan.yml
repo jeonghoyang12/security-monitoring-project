@@ -1,35 +1,63 @@
-name: Security Scan
+name: "Security Scan"
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
   schedule:
-    - cron: "0 0 * * 0" # Every Sunday at midnight UTC
+    - cron: '0 0 * * 0'  # Run weekly on Sundays
 
 jobs:
-  security-scan:
+  analyze:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: javascript, python
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+  find-secrets:
+    name: Find Hardcoded Secrets
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
+      
       - name: Find hardcoded secrets
-        uses: github/codeql-action/analyze@v2
+        uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  dependency-check:
+    name: Check Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       
-      - name: Check for vulnerable dependencies
-        # Run even if previous step fails
-        if: always()  
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-
+          
       - name: Install safety
-        if: always()
         run: pip install safety
-
+        
       - name: Run safety check
-        if: always()
-        run: safety check
+        run: |
+          if [ -f requirements.txt ]; then
+            safety check -r requirements.txt
+          else
+            echo "No requirements.txt found, skipping safety check"
+          fi
