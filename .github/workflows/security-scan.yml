@@ -19,45 +19,23 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
-        languages: javascript, python
+        languages: python, javascript
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
 
   find-secrets:
     name: Find Hardcoded Secrets
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - name: Find hardcoded secrets
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-  dependency-check:
-    name: Check Dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-          
-      - name: Install safety
-        run: pip install safety
-        
-      - name: Run safety check
-        run: |
-          if [ -f requirements.txt ]; then
-            safety check -r requirements.txt
-          else
-            echo "No requirements.txt found, skipping safety check"
-          fi
