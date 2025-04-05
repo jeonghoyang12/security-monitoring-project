@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Pre-commit hook to detect security issues before they're committed
+# Copy this file to .git/hooks/pre-commit and make it executable
+
+echo "Running security pre-commit hooks..."
+
+# Check for AWS credentials
+if git diff --cached | grep -E "AKIA[0-9A-Z]{16}"; then
+  echo "ERROR: Potential AWS access key found in commit!"
+  echo "Please remove AWS keys from the code before committing."
+  exit 1
+fi
+
+# Check for private keys
+if git diff --cached | grep -E "-----BEGIN .* PRIVATE KEY-----"; then
+  echo "ERROR: Private key found in commit!"
+  echo "Please remove private keys from the code before committing."
+  exit 1
+fi
+
+# Check for high entropy strings (potential secrets)
+if git diff --cached | grep -E "[a-zA-Z0-9/+]{40,}"; then
+  echo "WARNING: Potential secret or high-entropy string found."
+  echo "Please verify you're not committing secrets."
+  # Not failing the commit, just warning
+fi
+
+# Check for common password variable names with hardcoded values
+if git diff --cached | grep -E "(password|secret|token|key).*=.*['\"][a-zA-Z0-9]+['\"]"; then
+  echo "WARNING: Potential hardcoded credentials found."
+  echo "Consider using environment variables or a secrets manager."
+  # Not failing the commit, just warning
+fi
+
+echo "Pre-commit security checks completed."
+exit 0
