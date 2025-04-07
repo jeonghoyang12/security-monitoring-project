@@ -46,8 +46,6 @@ The project includes pre-configured security dashboards for:
 - Network Security: Security group and access changes
 - Login Activity: Authentication successes and failures
 
-![](dashboard.png)
-
 ## 🔒 Detection Rules
 
 Custom detection rules are defined in the detection/ directory:
@@ -59,5 +57,3 @@ Custom detection rules are defined in the detection/ directory:
 ### Failed Login Detection
 
 The system can successfully detect suspicious login patterns. Here's an example of the login attempts detection rule in action:
-
-![](Failed-login-attempt.png)
