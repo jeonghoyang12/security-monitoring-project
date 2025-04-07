@@ -47,3 +47,17 @@ The project includes pre-configured security dashboards for:
 - Login Activity: Authentication successes and failures
 
 ![](dashboard.png)
+
+## 🔒 Detection Rules
+
+Custom detection rules are defined in the detection/ directory:
+
+- `login-attempts.json`: Detects multiple failed login attempts
+- `iam-changes.json`: Identifies suspicious IAM permission changes
+- `security-groups.json`: Monitors security group modifications
+
+### Failed Login Detection
+
+The system can successfully detect suspicious login patterns. Here's an example of the login attempts detection rule in action:
+
+![](Failed-login-attempt.png)
