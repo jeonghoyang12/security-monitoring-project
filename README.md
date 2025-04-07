@@ -1,18 +1,17 @@
 # AWS Security Monitoring System
 
-A comprehensive security monitoring solution for AWS environments using the ELK stack (Elasticsearch, Logstash, Kibana) with GitHub security integration. This project demonstrates modern security engineering practices by analyzing CloudTrail logs to detect potential security threats.
+A comprehensive security monitoring solution for AWS environments using the ELK stack (Elasticsearch, Logstash, Kibana). This project demonstrates modern security engineering practices by analyzing CloudTrail logs to detect potential security threats.
 
 ## 🛡️ Features
 
-- Real-time AWS Security Monitoring using CloudTrail logs
+- AWS Security Monitoring using CloudTrail logs
 - Custom Detection Rules for identifying security threats
 - Security Dashboards for visualization and analysis
-- GitHub Security Integration with pre-commit hooks and automated scanning
 - Dockerized ELK Stack for easy deployment and management
 
 ## 🏗️ Architecture
 
-The system consists of three main components:
+The system consists of two main components:
 
 1. AWS Environment
    - CloudTrail for comprehensive API logging
@@ -22,10 +21,6 @@ The system consists of three main components:
    - Logstash for log processing and normalization
    - Elasticsearch for indexed storage and searching
    - Kibana for visualization and dashboards
-3. GitHub Security
-   - Pre-commit hooks to prevent credential leakage
-   - GitHub Actions for automated security scanning
-   - Dependency vulnerability checking
 
 ## 🔍 Security Detection Capabilities
 
